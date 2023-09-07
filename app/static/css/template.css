@@ -1,0 +1,31 @@
+.templates-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.templates-container > .template {
+    background-color: var(--hbg);
+    color: var(--hfg);
+    box-shadow: 0px 0px 1px 1px var(--hfg);
+    width: 100%;
+    max-width: 350px;
+    border-radius: 2px;
+    font-size: 27px;
+    cursor: pointer;
+    border: 0px;
+    margin: 10px;
+    border: 3px solid transparent;
+}
+
+.templates-container > .template.selected {
+    border: 3px solid var(--hfg);
+    font-weight: bold;
+    padding: 0px;
+}
+
+.templates-container > .template > p {
+    padding: 10px;
+    margin: 0px;
+    font-family: var(--font2);
+}

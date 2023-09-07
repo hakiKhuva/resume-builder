@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Preview</title>
+    <style>
+        @import url("{{ HEADING_FONT['import_url'] }}");
+        @import url("{{ PARAGRAPH_FONT['import_url'] }}");
+
+        :root {
+            --h-font: {{HEADING_FONT['font_family'] | safe }};
+            --p-font: {{PARAGRAPH_FONT['font_family'] | safe }};
+        }
+
+        body{
+            margin: 0px;
+        }
+        
+        .h-font {
+            font-family: var(--h-font);
+        }
+
+        .p-font {
+            font-family: var(--p-font);
+        }
+
+        #resume-page {
+            width: 210mm;
+            height: 297mm;
+            max-width: 210mm;
+            max-height: 297mm;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--h-font);
+        }
+
+        p, div, span, b, i, strong, em {
+            font-family: var(--p-font);
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+    </style>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <section id="resume-page">
+        {% block resume_page %}
+        {% endblock %}
+    </section>
+</body>
+</html>

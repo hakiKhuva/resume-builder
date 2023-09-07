@@ -1,0 +1,40 @@
+.preview-container {
+    margin: 35px auto;
+    box-shadow: 0px 0px 1px 0px var(--fg);
+    width: max-content;
+    padding: 25px;
+}
+
+.preview-container iframe {
+    min-width: 225mm;
+    min-height: 305mm;
+}
+
+.btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px 5px;
+}
+
+.btns > .btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--fg);
+    background-color: var(--bg);
+    cursor: pointer;
+    margin: 2px 15px;
+    transition: 300ms;
+}
+
+.btns > .btn > * {
+    margin: 1px 2px;
+    font-size: 16px;
+}
+
+.btns > .btn:hover {
+    transform: scale(110%);
+    transition: 150ms;
+}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <script>
+        const changeTemplate = (e) => {
+            if(e){
+                const CURRENT_TEMPLATE = e.dataset["template"];
+                document.querySelector("#template-name").value = CURRENT_TEMPLATE;
+                document.querySelectorAll("[data-template]").forEach(templateElement => {
+                    templateElement.classList.remove("selected");
+                })
+                e.classList.add("selected")
+            }
+        }
+    </script>
+    <form action="{{ url_for('ResumeBuilder.preview_and_save') }}" method="GET">
+        <div class="block-container">
+            <h2 class="resume-head">Templates</h2>
+            <input type="hidden" value="{{ available_templates[0].lower() }}" name="template-name" id="template-name" />
+            <div class="templates-container">
+                {% for template in available_templates %}
+                <button type="button" class="template {{ 'selected' if available_templates.index(template) == 0 }}" data-template="{{template.lower()}}" onclick="changeTemplate(this);">
+                    <p>{{template}}</p>
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="block-container">
+            <h2 class="resume-head">Fonts</h2>
+            <div class="label">
+                <label for="heading-font">Heading font</label>
+                <select name="heading-font" class="input" id="heading-font">
+                    <option disabled selected>Select heading font</option>
+                    {% for font in all_fonts %}
+                    <option value="{{font}}">{{font}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="label">
+                <label for="paragraph">Paragraph font</label>
+                <select name="paragraph-font" class="input" id="paragraph-font">
+                    <option disabled selected>Select paragraph font</option>
+                    {% for font in all_fonts %}
+                    <option value="{{font}}">{{font}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="block-container">
+            <h2 class="resume-head">Next step</h2>
+            <button type="submit" class="submit-btn">Preview</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

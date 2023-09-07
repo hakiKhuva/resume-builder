@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}{{ " - " if title }}Resume builder</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="main-container">
+        <div class="main-head">
+            <h1><a href="/">Resume builder</a></h1>
+        </div>
+        <div class="stages">
+            <a href="{{ url_for('ResumeBuilder.create_resume') }}" class="stage {{'active' if request.endpoint == 'ResumeBuilder.create_resume'}}">
+                <span class="stage-index">1</span>
+                <span class="stage-name">Enter information</span>
+            </a>
+            <a href="{{ url_for('ResumeBuilder.select_template') }}"  class="stage {{'active' if request.endpoint == 'ResumeBuilder.select_template'}}">
+                <span class="stage-index">2</span>
+                <span class="stage-name">Select Template</span>
+            </a>
+            <a href="{{ url_for('ResumeBuilder.preview_and_save') }}" class="stage {{'active' if request.endpoint == 'ResumeBuilder.preview_and_save'}}">
+                <span class="stage-index">3</span>
+                <span class="stage-name">Preview & Save</span>
+            </a>
+        </div>
+        {% with msgs = get_flashed_messages() %}
+        <div class="messages">
+            {% for msg in msgs %}
+            <div class="msg">{{msg}}</div>
+            {% endfor %}
+        </div>
+        {% endwith %}
+        {% block body %}{% endblock %}
+    </div>
+    <a href="https://github.com/hakiKhuva/resume-builder" id="source-code-anchor">
+        <span>View Source</span>
+    </a>
+</body>
+</html>

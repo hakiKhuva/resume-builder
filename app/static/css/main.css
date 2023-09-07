@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700;900&display=swap');
+
+:root {
+    --font1: 'Kanit', sans-serif;
+    --font2: 'Mukta', sans-serif;
+    --bg: #f8f8f8;
+    --fg: #111;
+    --hbg: #ffffff;
+    --hfg: #000000;
+    --shade-clr: #aaa;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: var(--font1);
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+a {
+    text-decoration: none;
+    color: var(--fg);
+}
+
+body * {
+    font-family: var(--font1);
+}
+
+#source-code-anchor {
+    font-size: 19px;
+    font-family: var(--font2);
+    padding: 20px 12.5px;
+    background-color: #444;
+    color: #fff;
+    display: block;
+    width: max-content;
+    text-align: center;
+    width: calc(100% - 25px);
+}
+
+.main-container {
+    max-width: 1250px;
+    margin: auto;
+    padding: 10px;
+}
+
+.main-head {
+    text-align: center;
+}
+
+.messages > .msg {
+    margin: 10px 0px;
+    background-color: var(--hbg);
+    color: var(--hfg);
+    padding: 15px 10px;
+    font-size: 17px;
+    box-shadow: 0px 0px 1px 0px var(--hfg);
+    font-family: var(--font2);
+    border-left: 5px solid var(--fg);
+}
+
+.main-head > h1 {
+    font-size: 4.5rem;
+    transform: rotate(-5deg);
+}
+
+.stages {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stages > .stage {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.stages > .stage.active {
+    border-bottom: 5px solid var(--fg);
+}
+
+.stages > .stage > * {
+    font-size: 18px;
+    padding: 5px;
+    margin: 2px;
+}
+
+.stages > .stage .stage-index {
+    background-color: var(--fg);
+    color: var(--bg);
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.stages > .stage .stage-name {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media (max-width:750px) {
+    .main-head > h1 {
+        font-size: 2.5rem;
+    }   
+}
+
+@media (max-width:650px) {
+    .stages {
+        flex-direction: column;
+        align-items: start;
+    }
+}

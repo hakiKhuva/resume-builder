@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/preview.css') }}">
+<script src="https://unpkg.com/feather-icons"></script>
+{% endblock %}
+
+{% block body %}
+<div class="btns">
+    <button id="print-btn" class="btn" type="button">
+        <i data-feather="printer" width="18px" height="18px"></i>
+        <span>PRINT</span>
+    </button>
+    <a href="{{request.url}}&form=download" class="btn" target="_blank">
+        <i data-feather="download-cloud" width="18px" height="18px"></i>
+        <span>DOWNLOAD HTML</span>
+    </a>
+</div>
+<div class="preview-container">
+<iframe src="{{request.url}}&form=iframe" frameborder="0"></iframe>
+</div>
+<script>
+    document.querySelector("#print-btn").addEventListener("click", e => {
+        const win = window.open("{{request.url|safe}}&form=iframe")
+        win.print()
+        win.addEventListener("afterprint", e => {
+            win.close()
+        })
+    })
+    feather.replace()
+</script>
+{% endblock %}

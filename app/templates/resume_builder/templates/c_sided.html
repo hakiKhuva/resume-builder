@@ -1,0 +1,542 @@
+{% extends "resume_builder/templates/base.html" %}
+
+{% block head %}
+<script src="https://unpkg.com/feather-icons"></script>
+<style>
+    .diff-sec { margin: 25px 0px; }
+    .diff-sec:first-of-type { margin-top: 0px; }
+
+    .bottom-border {
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: #333;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    #user-details {
+    }
+
+    #user-details > #user-name {
+        font-size: 45px;
+        margin: 0px;
+    }
+
+    #user-details > #role-name {
+        font-size: 22.5px;
+        margin: 0px;
+    }
+
+    #user-details > #summary {
+        font-size: 18px;
+    }
+    #user-details > #summary p {
+        margin: 5px 0px;
+    }
+
+    .grid-part {
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+    .grid-part > .section h2,
+    .diff-sec h2 {
+        margin: 0px;
+        font-size: 23.5px;
+    }
+    .grid-part > .section .inner-sec {
+        margin: 25px 0px;
+    }
+    .grid-part > .section .inner-sec:first-of-type {
+        margin-top: 0px;
+    }
+    .grid-part > .section .inner-sec:last-of-type {
+        margin-bottom: 10px;
+    }
+    .grid-part > .section:nth-child(2) {
+        padding-left: 25px;
+    }
+    .grid-part > .section:nth-child(2) {
+        border-left: 1px solid #666;
+        margin-left: 25px;
+    }
+
+    #contact-info {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+    #contact-info > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 4px 0px;
+    }
+    #contact-info > div svg {
+        margin-right: 5px;
+        min-width: 18.5px;
+        min-height: 18.5px;
+        max-width: 18.5px;
+        max-height: 18.5px;
+    }
+    #contact-info > div span,
+    #contact-info > div a {
+        font-size: 17.75px;
+        word-break: break-all;
+    }
+
+    #skills #skills-container {
+    }
+    #skills #skills-container > span {
+        font-size: 17.5px;
+        margin-right: 6.5px;
+    }
+    #skills #skills-container > span::after {
+        content: ", ";
+        color: #333;
+    }
+    #skills #skills-container > span:last-of-type:after {
+        content: "";
+    }
+    #skills #skills-container > span:last-of-type {
+        margin-right: 0px;
+    }
+    #skills #skills-container > div {
+        display: flex;
+        flex-direction: column;
+        margin: 12.5px 0px;
+    }
+    #skills #skills-container > div .name {
+        font-size: 16.5px;
+    }
+    #skills #skills-container > div .bar {
+        background-color: #bbb;
+        height: 10px;
+        border-radius: 3px;
+        width: 100%;
+        margin-top: 3px;
+    }
+    #skills #skills-container > div .level {
+        background-color: #555;
+        height: 10px;
+        border-radius: 3px;
+    }
+    
+    #hobbies-interests {
+
+    }
+    #hobbies-interests #hobbies-interests-container > span {
+        font-size: 16.8px;
+        margin-right: 3.5px;
+    }
+    #hobbies-interests #hobbies-interests-container > span::after {
+        content: ", ";
+        color: #333;
+    }
+    #hobbies-interests #hobbies-interests-container > span:last-of-type {
+        margin-right: 0px;
+    }
+    #hobbies-interests #hobbies-interests-container > span:last-of-type::after {
+        content: "";
+    }
+
+    #education #education-container {}
+    #education #education-container > .education-item {
+        margin: 15px 0px;
+    }
+    #education #education-container > .education-item:first-of-type { margin-top: 5px; }
+    #education #education-container > .education-item:last-of-type { margin-bottom: 5px; }
+    #education #education-container > .education-item > .e-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #education #education-container > .education-item > .e-top .degree-course {
+        font-size: 18.5px;
+        font-weight: bold;
+    }
+    #education #education-container > .education-item > .e-top svg {
+        width: 16px; min-width: 16px;;
+        height: 16px; min-height: 16px;
+        margin-right: 3px;
+    }
+    #education #education-container > .education-item > .e-top div {
+        font-size: 16px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    #education #education-container > .education-item > .e-top .from-y {
+        margin: 0px 2px;
+    }
+    #education #education-container > .education-item > .e-top .from-y::after {
+        content: "-";
+        margin: 0px 2.5px;
+    }
+    #education #education-container > .education-item > .e-bottom {
+        margin-top: 1.25px;
+    }
+    #education #education-container > .education-item > .e-bottom .su-name {
+        font-size: 17.5px;
+    }
+
+    #certificates #certificates-container {
+    }
+
+    #certificates #certificates-container > .certificate-item {
+        margin: 15.5px 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #certificates #certificates-container > .certificate-item:first-of-type { margin-top: 0px; }
+    #certificates #certificates-container > .certificate-item:last-of-type { margin-bottom: 0px; }
+    #certificates #certificates-container > .certificate-item svg {
+        width: 16.5px; min-width: 16.5px;
+        height: 16.5px; min-height: 16.5px;
+        margin-right: 4px;
+        display: block;
+    }
+    #certificates #certificates-container > .certificate-item .name {
+        font-size: 17.75px;
+        font-weight: bold;
+    }
+    #certificates #certificates-container > .certificate-item .c-btm {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 16.25px;
+    }
+
+    #work-experiences > #work-experiences-container {}
+    #work-experiences > #work-experiences-container .work-experience-item {
+        margin: 30px 0px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item:first-of-type { margin-top: 0px; }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top > .job-name {
+        font-size: 18.5px;
+        font-weight: bold;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top svg {
+        min-width: 15px;width: 15px;
+        min-height: 15px;height: 15px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top > div {
+        display: flex;
+        align-items: center;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top > div span {
+        font-size: 16px;
+        margin: 0px 2.5px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-top > div .job-from::after {
+        content: "-";
+        margin-left: 3.5px;
+        margin-right: 1px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-mid {
+        margin: 2px 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-mid > .c-name {
+        font-size: 17.5px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-mid > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-mid svg {
+        min-width: 14.5px; min-height: 14.5px;
+        width: 14.5px; height: 14.5px;
+        margin-right: 2px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-mid  .c-loc {
+        font-size: 15.5px;
+    }
+    #work-experiences > #work-experiences-container .work-experience-item > .we-bot {
+        margin: 4px 0px;
+    }
+
+    #awards-honors #awards-honors-container {
+    }
+    #awards-honors #awards-honors-container > .awards-honors-item {
+        margin: 15px 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    #awards-honors #awards-honors-container > .awards-honors-item:first-of-type { margin-top: 0px; }
+    #awards-honors #awards-honors-container > .awards-honors-item .name {
+        font-size: 17.5px;
+    }
+    #awards-honors #awards-honors-container > .awards-honors-item .year {
+        font-size: 16.75px;
+    }
+    #awards-honors #awards-honors-container > .awards-honors-item .year::before {
+        content: "(";
+    }
+    #awards-honors #awards-honors-container > .awards-honors-item .year::after {
+        content: ")";
+    }
+
+    #projects #projects-container {}
+    #projects #projects-container > .p-item {
+        margin: 20px 0px;
+    }
+    #projects #projects-container > .p-item:first-of-type { margin-top: 5px; }
+    #projects #projects-container > .p-item:last-of-type { margin-bottom: 5px; }
+    #projects #projects-container > .p-item > .p-name {
+        font-size: 19px;
+        font-weight: bold;
+    }
+    #projects #projects-container > .p-item > .links {
+        display: flex;
+        flex-direction: column;
+        font-size: 15.25px;
+        margin: 3.5px 0px;
+    }
+    #projects #projects-container > .p-item > .links > .link {
+        display: flex;
+        align-items: center;
+    }
+    #projects #projects-container > .p-item > .links > .link a {
+        white-space: pre;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #projects #projects-container > .p-item > .links > .link svg {
+        width: 15.5px; min-width: 15.5px;
+        height: 15.5px; min-height: 15.5px;
+        margin-right: 3px;
+    }
+    #projects #projects-container > .p-item > .desc {
+        margin: 3.75px 0px;
+    }
+    #projects #projects-container > .p-item > .desc p {
+        font-size: 17.05px;
+        margin: 2.5px 0px;
+    }
+
+</style>
+{% endblock %}
+
+{% block resume_page %}
+<div id="user-details" class="diff-sec" style="margin-bottom: 7.5px;">
+    <h1 id="user-name">{{formdata.name}}</h1>
+    <h2 id="role-name">{{formdata.role_job_name}}</h2>
+    {% if formdata.summary.strip() %}
+    <div id="summary">
+        {% for line in formdata.summary.strip().splitlines() %}
+        <p>{{line}}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<div id="contact-info" class="diff-sec" style="margin-top: 7.5px;">
+    {% if formdata.address %}
+    <div><i data-feather="map-pin"></i><span>{{formdata.address}}</span></div>
+    {% endif %}
+    <div class="known-languages"><i data-feather="globe"></i><span>{{", ".join(formdata.known_languages)}}</span></div>
+    {% if formdata.phone %}
+    <div><i data-feather="phone"></i><a target="_blank" href="tel:{{formdata.phone}}">{{formdata.phone}}</a></div>
+    {% endif %}
+    {% if formdata.email %}
+    <div><i data-feather="mail"></i><a target="_blank" href="mailto:{{formdata.email}}">{{formdata.email}}</a></div>
+    {% endif %}
+    {% if formdata.linkedin_url %}
+    <div><i data-feather="linkedin"></i><a target="_blank" href="{{formdata.linkedin_url}}">{{formdata.linkedin_url.removeprefix("https://").removeprefix("www.").removeprefix("in.")}}</a></div>
+    {% endif %}
+    {% if formdata.github_url %}
+    <div><i data-feather="github"></i><a target="_blank" href="{{formdata.github_url}}">{{formdata.github_url.removeprefix("https://").removeprefix("www.")}}</a></div>
+    {% endif %}
+    {% if formdata.website_url %}
+    <div><i data-feather="link-2"></i><a target="_blank" href="{{formdata.website_url}}">{{formdata.website_url.removeprefix("https://").removeprefix("www.")}}</a></div>
+    {% endif %}
+</div>
+
+<div class="grid-part">
+    
+    <div class="section">
+        {% if formdata.work_experiences %}
+        <div id="work-experiences" class="inner-sec">
+            <h2>Work experience</h2>
+            <div class="bottom-border"></div>
+            <div id="work-experiences-container">
+            {% for weitem in formdata.work_experiences %}
+                <div class="work-experience-item">
+                    <div class="we-top">
+                        <span class="job-name">{{weitem.job.name}}</span>
+                        <div>
+                            <i data-feather="calendar"></i>
+                            <span class="job-from">{{weitem.job.from}}</span>
+                            <span class="job-to">{{weitem.job.to}}</span>
+                        </div>
+                    </div>
+                    <div class="we-mid">
+                        <span class="c-name">{{weitem.company.name}}</span>
+                        <div>
+                            <i data-feather="map-pin"></i>
+                            <span class="c-loc">{{weitem.company.location}}</span>
+                        </div>
+                    </div>
+                    {% if weitem.details.strip() %}
+                    <ul class="we-bot">
+                        {% for line in weitem.details.strip().splitlines() %}
+                        <li>{{line}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if formdata.education %}
+        <div id="education" class="inner-sec">
+            <h2>Education</h2>
+            <div class="bottom-border"></div>
+            <div id="education-container">
+                {% for item in formdata.education %}
+                <div class="education-item">
+                    <div class="e-top">
+                        <span class="degree-course">{{item.degree_course}}</span>
+                        <div>
+                            <i data-feather="calendar"></i>
+                            <span class="from-y">{{item.year.from}}</span>
+                            <span class="to-y">{{item.year.to}}</span>
+                        </div>
+                    </div>
+                    <div class="e-bottom">
+                        <span class="su-name">{{item.su_name}}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if formdata.certificates %}
+        <div id="certificates" class="inner-sec">
+            <h2>Certificates</h2>
+            <div class="bottom-border"></div>
+            <div id="certificates-container">
+            {% for citem in formdata.certificates %}
+                <div class="certificate-item">
+                    <span class="name">{{citem.name}}</span>
+                    <div class="c-btm">
+                        <i data-feather="calendar"></i>
+                        <span class="year">{{citem.year}}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div class="section">
+        {% if formdata.skills %}
+        <div id="skills" class="inner-sec">
+            <h2>Skills</h2>
+            <div class="bottom-border"></div>
+            <div id="skills-container">
+                {% if formdata.skills[0].level == -1 %}
+                    {% for skill in formdata.skills %}
+                    <span>{{skill.name}}</span>
+                    {% endfor %}
+                {% else %}
+                    {% for skill in formdata.skills %}
+                    <div>
+                        <span class="name">{{skill.name}}</span>
+                        <div class="bar">
+                            <div class="level" style="width: {{skill.level}}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if formdata.hobbies_or_interests %}
+        <div id="hobbies-interests" class="inner-sec">
+            <h2>Hobbies/Interests</h2>
+            <div class="bottom-border"></div>
+            <div id="hobbies-interests-container">
+                {% for hoi in formdata.hobbies_or_interests %}
+                <span>{{hoi}}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if formdata.awards_and_honors %}
+        <div id="awards-honors" class="inner-sec">
+            <h2>Awards/Honors</h2>
+            <div class="bottom-border"></div>
+            <div id="awards-honors-container">
+            {% for ah in formdata.awards_and_honors %}
+                <div class="awards-honors-item">
+                    <span class="name">{{ah.name}}</span>
+                    <span class="year">{{ah.year}}</span>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% if formdata.projects %}
+<div id="projects" class="diff-sec">
+    <h2>Projects</h2>
+    <div class="bottom-border"></div>
+    <div id="projects-container">
+    {% for project in formdata.projects %}
+        <div class="p-item">
+            <div class="p-name">{{project.name}}</div>
+            {% if project.description.strip() %}
+                <div class="desc">
+                {% for line in project.description.strip().splitlines() %}
+                    <p>{{line}}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+            {% if project.demo_url or project.source_url %}
+            <div class="links">
+                {% if project.source_url %}
+                <div class="link">
+                    <i data-feather="code"></i>
+                    <a href="{{project.source_url}}" target="_blank">{{project.source_url}}</a>
+                </div>
+                {% endif %}
+                {% if project.demo_url %}
+                <div class="link">
+                    <i data-feather="link"></i>
+                    <a href="{{project.demo_url}}" target="_blank">{{project.demo_url}}</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<script>feather.replace();</script>
+{% endblock %}

@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="form-container resume-container">
+    {% if resume_formdata_errors%}
+    <hr>
+    <h3 style="color: #c11;">There are errors on the form. Please fix them before submitting again.</h3>
+    <ul style="color: #c11;">
+        {% for error in resume_formdata_errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    {% endif %}
+    <form action="{{ url_for('ResumeBuilder.create_resume') }}" method="post">
+        <div class="block-container">
+            <h2 class="resume-head">Personal information</h2>
+            <div class="label">
+                <label for="name">Your name</label>
+                <input type="text" name="name" id="name" placeholder="Enter name here" value="{{resume_formdata.name}}" />
+            </div>
+            <div class="label">
+                <label for="role-job-name">Role/Job name</label>
+                <input type="text" name="role-job-name" id="role-job-name" placeholder="Enter role/job name here" value="{{resume_formdata.role_job_name}}" />
+            </div>
+            <div class="label">
+                <label for="email">Email address</label>
+                <input type="email" name="email" id="email" placeholder="Enter email address here" value="{{resume_formdata.email}}" />
+            </div>
+            <div class="label">
+                <label for="phone">Phone number</label>
+                <input type="tel" name="phone" id="phone" placeholder="Phone number here" value="{{resume_formdata.phone}}" />
+            </div>
+            <div class="label">
+                <label for="cur-per-address">Current/Permanent Address</label>
+                <textarea name="cur-per-address" id="cur-per-address" rows="3" placeholder="Current or Permanent address">{{resume_formdata.address}}</textarea>
+            </div>
+            <div class="label">
+                <label for="known-languages">Languages you know</label>
+                <input type="text" name="known-languages" id="known-languages" placeholder="Languages you know" value="{{', '.join(resume_formdata.known_languages)}}" />
+                <small>Each language must be separated by comma.</small>
+            </div>
+            <div class="label">
+                <label for="linkedin-url">LinkedIn URL</label>
+                <input type="url" name="linkedin-url" id="linkedin-url" placeholder="Your LinkedIn profile URL" value="{{resume_formdata.linkedin_url}}" />
+            </div>
+            <div class="label">
+                <label for="github-url">GitHub URL</label>
+                <input type="url" name="github-url" id="github-url" placeholder="Your GitHub profile URL" value="{{resume_formdata.github_url}}" />
+            </div>
+            <div class="label">
+                <label for="personal-website-url">Personal Website URL</label>
+                <input type="url" name="personal-website-url" id="personal-website-url" placeholder="Your Personal website URL" value="{{resume_formdata.website_url}}" />
+            </div>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Summary</h2>
+            <div class="label">
+                <label for="summary">Summary</label>
+                <textarea name="summary" id="summary" rows="2" placeholder="Enter summary, that summarize your goal for your job">{{resume_formdata.summary}}</textarea>
+            </div>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Education</h2>
+            <div id="education-container">
+                {% for education in resume_formdata.education %}
+                <div class="edu-block copy-block">
+                    <div class="label">
+                        <label>School/University name</label>
+                        <input type="text" name="school-university-name" placeholder="School or University name" value="{{education.su_name}}" />
+                    </div>
+                    <div class="label">
+                        <label>Degree or Course name</label>
+                        <input type="text" name="degree-course-name" placeholder="Degree or Course name" value="{{education.degree_course}}" />
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>Started year</label>
+                            <input type="number" name="degree-course-started-year" placeholder="Started year" value="{{education.year.from}}"/>
+                        </div>
+                        <div class="label">
+                            <label>Passed year</label>
+                            <input type="number" name="degree-course-passed-year" placeholder="Passed year" value="{{education.year.to}}" />
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="edu-block copy-block">
+                    <div class="label">
+                        <label>School/University name</label>
+                        <input type="text" name="school-university-name" placeholder="School or University name"/>
+                    </div>
+                    <div class="label">
+                        <label>Degree or Course name</label>
+                        <input type="text" name="degree-course-name" placeholder="Degree or Course name"/>
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>Started year</label>
+                            <input type="number" name="degree-course-started-year" placeholder="Started year"/>
+                        </div>
+                        <div class="label">
+                            <label>Passed year</label>
+                            <input type="number" name="degree-course-passed-year" placeholder="Passed year"/>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-education-block">
+                <span>+</span>
+                <span>Add Education</span>
+            </button>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Certificates</h2>
+            <div id="certificates-container">
+                {% for certificate in resume_formdata.certificates %}
+                <div class="certificate-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Certificate name</label>
+                            <input type="text" name="certificate-name" placeholder="Certificate name here" value="{{certificate.name}}" />
+                        </div>
+                        <div class="label">
+                            <label>Certified year</label>
+                            <input type="number" name="certified-year" placeholder="Year of certification" value="{{certificate.year}}" />
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="certificate-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Certificate name</label>
+                            <input type="text" name="certificate-name" placeholder="Certificate name here" />
+                        </div>
+                        <div class="label">
+                            <label>Certified year</label>
+                            <input type="number" name="certified-year" placeholder="Year of certification" />
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-certificate-block">
+                <span>+</span>
+                <span>Add another Certificate</span>
+            </button>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Awards & Honors</h2>
+            <div id="awards-honors-container">
+                {% for awho in resume_formdata.awards_and_honors %}
+                <div class="award-honor-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Award/Honor name</label>
+                            <input type="text" name="award-honor-name" placeholder="Enter name here" value="{{awho.name}}" />
+                        </div>
+                        <div class="label">
+                            <label>Award/Honor year</label>
+                            <input type="number" name="award-honor-year" placeholder="Enter year here" value="{{awho.year}}" />
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="award-honor-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Award/Honor name</label>
+                            <input type="text" name="award-honor-name" placeholder="Enter name here" />
+                        </div>
+                        <div class="label">
+                            <label>Award/Honor year</label>
+                            <input type="number" name="award-honor-year" placeholder="Enter year here" />
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-award-honor-block">
+                <span>+</span>
+                <span>Add another Award/Honor</span>
+            </button>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Skills & Hobbies</h2>
+            <div id="skills-container">
+                {% for skill in resume_formdata.skills %}
+                <div class="skill-block copy-block l2">
+                    <div class="label">
+                        <label for="skill-name">Skill Name</label>
+                        <input type="text" name="skill-name" id="skill-name" placeholder="Skill here" value="{{skill.name}}" />
+                    </div>
+                    <div class="label">
+                        <label for="skill-level">Skill level(%)[<small>Set skill level to -1 to not add bar</small>]</label>
+                        <span class="right-text skill-level-describer">{{skill.level or '-1'}}%</span>
+                        <input type="range" name="skill-level" id="skill-level" min="-1" max="100" step="1" value="{{skill.level or -1}}" oninput="this.parentElement.querySelector('.right-text').textContent = `${this.value}%`" />
+                    </div>
+                </div>
+                {% else %}
+                <div class="skill-block copy-block l2">
+                    <div class="label">
+                        <label for="skill-name">Skill Name</label>
+                        <input type="text" name="skill-name" id="skill-name" placeholder="Skill here" />
+                    </div>
+                    <div class="label">
+                    <label for="skill-level">Skill level(%)[<small>Set skill level to -1 to not add bar</small>]</label>
+                        <span class="right-text">-1%</span>
+                        <input type="range" name="skill-level" id="skill-level" min="-1" max="100" step="1" value="-1" oninput="this.parentElement.querySelector('.right-text').textContent = `${this.value}%`" />
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-new-skill-block">
+                <span>+</span>
+                <span>Add new skill</span>
+            </button>
+            <div class="label">
+                <label for="hobbies-interests">Hobbies/Interests</label>
+                <textarea name="hobbies-interests" id="hobbies-interests" rows="2" placeholder="Your hobbies/Interests (each item must be separated by comma)">{{', '.join(resume_formdata.hobbies_or_interests)}}</textarea>
+            </div>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Projects</h2>
+            <div id="projects-container">
+                {% for project in resume_formdata.projects %}
+                <div class="project-block copy-block">
+                    <div class="label">
+                        <label>Project name</label>
+                        <input type="text" name="project-name" placeholder="Project name" value="{{project.name}}" />
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>Project source URL</label>
+                            <input type="url" name="project-source-url" placeholder="Project Source URL" value="{{project.source_url}}" />
+                        </div>
+                        <div class="label">
+                            <label>Project Demo URL</label>
+                            <input type="url" name="project-demo-url" placeholder="Project Demo URL" value="{{project.demo_url}}" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Project description</label>
+                        <textarea name="project-description" placeholder="Project description" value="{{project.description}}">{{project.description}}</textarea>
+                    </div>
+                </div>
+                {% else %}
+                <div class="project-block copy-block">
+                    <div class="label">
+                        <label>Project name</label>
+                        <input type="text" name="project-name" placeholder="Project name" />
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>Project source URL</label>
+                            <input type="url" name="project-source-url" placeholder="Project Source URL" />
+                        </div>
+                        <div class="label">
+                            <label>Project Demo URL</label>
+                            <input type="url" name="project-demo-url" placeholder="Project Demo URL" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Project description</label>
+                        <textarea name="project-description" placeholder="Project description"></textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-new-project-block">
+                <span>+</span>
+                <span>Add new project</span>
+            </button>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Work experience</h2>
+            <div id="work-experiences-container">
+                {% for work_exp in resume_formdata.work_experiences %}
+                <div class="work-experience-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Company name</label>
+                            <input type="text" name="company-name" placeholder="Company name" value="{{work_exp.company.name}}" />
+                        </div>
+                        <div class="label">
+                            <label>Location</label>
+                            <input type="text" name="company-location" placeholder="Company Location" value="{{work_exp.company.location}}" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Job/role name</label>
+                        <input type="text" name="job-role-name" placeholder="Job/Role name" value="{{work_exp.job.name}}" />
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>From</label>
+                            <input type="month" name="job-from" placeholder="Year started" value="{{work_exp.job.from}}" />
+                        </div>
+                        <div class="label">
+                            <label>To(leave it blank, if present)</label>
+                            <input type="month" name="job-to" placeholder="Year ended" value="{{work_exp.job.to}}" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Write more details</label>
+                        <textarea name="work-exp-more-details" rows="3" placeholder="Add more details(if any)">{{work_exp.details}}</textarea>
+                    </div>
+                </div>
+                {% else %}
+                <div class="work-experience-block copy-block">
+                    <div class="l2">
+                        <div class="label">
+                            <label>Company name</label>
+                            <input type="text" name="company-name" placeholder="Company name" />
+                        </div>
+                        <div class="label">
+                            <label>Location</label>
+                            <input type="text" name="company-location" placeholder="Company Location" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Job/role name</label>
+                        <input type="text" name="job-role-name" placeholder="Job/Role name" />
+                    </div>
+                    <div class="l2">
+                        <div class="label">
+                            <label>From</label>
+                            <input type="month" name="job-from" placeholder="Year started" />
+                        </div>
+                        <div class="label">
+                            <label>To(leave it blank, if present)</label>
+                            <input type="month" name="job-to" placeholder="Year ended" />
+                        </div>
+                    </div>
+                    <div class="label">
+                        <label>Write more details</label>
+                        <textarea name="work-exp-more-details" rows="3" placeholder="Add more details(if any)"></textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="action-btn" id="add-work-experience-block">
+                <span>+</span>
+                <span>Add another work experience</span>
+            </button>
+        </div>
+
+        <div class="block-container">
+            <h2 class="resume-head">Next step</h2>
+            <div class="label">
+                <h3>Entered data will be stored in your local machine.</h3>
+            </div>
+            <button type="submit" class="submit-btn">
+                >>> Select Template for Resume
+            </button>
+        </div>
+    </form>
+</div>
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+{% endblock %}
