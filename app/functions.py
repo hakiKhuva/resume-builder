@@ -14,7 +14,7 @@ def resume_data_required(f):
         uf.from_session('resume-data')
         uf.validate()
         if len(uf.errors) > 0:
-            flash("Please Fix the errors in the resume form!")
+            flash("Please Fix errors in the resume form!")
             return redirect(url_for("ResumeBuilder.create_resume"))
         g.user_form = uf
         return f(*args, **kwargs)

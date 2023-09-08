@@ -1,5 +1,6 @@
 from flask import request, session
 import re
+import phonenumbers
 
 
 class UserForm(object):
@@ -143,8 +144,15 @@ class UserForm(object):
         if self.resume_data["phone"]:
             if not self.resume_data["phone"].startswith("+"):
                 self.errors.append("Your Phone number must start with '+(country_code)'.")
-            elif len(self.resume_data["phone"]) < 5 or len(self.resume_data["phone"]) > 20:
-                self.errors.append("Phone number length must be between 5 to 20!")
+            else:
+                try:
+                    phoneobj = phonenumbers.parse(self.resume_data["phone"])
+                except phonenumbers.phonenumberutil.NumberParseException:
+                    self.errors.append("Enter a valid phone number or leave it blank!")
+                else:
+                    if phonenumbers.is_valid_number(phoneobj) is not True:
+                        self.errors.append("Enter a valid phone number or leave it blank!")
+
 
         if len(self.resume_data["address"]) > 175:
             self.errors.append("Address must be less than 175 characters!")
